@@ -9,30 +9,35 @@ const SearchPage = (props) => {
 
   const fetchData = async () => {
     return await fetch('https://api.spoonacular.com/food/ingredients/search?apiKey=39ea81ddbf784ac6b67ef9ee105df6d4&query=apple')
-      .then(response => response.json())
-      .then(data => {
-         setFoodList(data.results)
-         setFoodListDefault(data.results)
-       });}
+                 .then(response => response.json())
+                 .then(data => {
+                    setFoodList(data.results)
+                    setFoodListDefault(data.results)
+                  });}
 
   const updateInput = async (input) => {
-     const filtered = foodListDefault.filter(country => {
-      return country.name.toLowerCase().includes(input.toLowerCase())
-     })
-     setInput(input);
-     setFoodList(filtered);
-  }
+      return await fetch('https://api.spoonacular.com/food/ingredients/search?apiKey=39ea81ddbf784ac6b67ef9ee105df6d4&query=' + input)
+                       .then(response => response.json())
+                       .then(data => {
+                          setFoodList(data.results)
+                          setFoodListDefault(data.results)
+                          setInput(input)
+                        });}
 
   useEffect( () => {fetchData()},[]);
 
   return (
     <>
       <h1>Food List</h1>
+      <div className = "search">
       <SearchBar
        input={input}
        onChange={updateInput}
       />
+      </div>
+      <div className = "buttons">
       <FoodList foodList={foodList}/>
+      </div>
     </>
    );
 }
